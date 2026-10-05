@@ -1,0 +1,30 @@
+{
+  "fastapi": {
+    "candidates": 246,
+    "fix_like": 135,
+    "any_async": "73/246",
+    "any_module_level": "56/246",
+    "only_module_level": "9/246"
+  },
+  "rich": {
+    "candidates": 80,
+    "fix_like": 22,
+    "any_async": "0/80",
+    "any_module_level": "33/80",
+    "only_module_level": "7/80"
+  },
+  "requests": {
+    "candidates": 26,
+    "fix_like": 13,
+    "any_async": "0/26",
+    "any_module_level": "9/26",
+    "only_module_level": "2/26"
+  },
+  "httpx": {
+    "candidates": 301,
+    "fix_like": 65,
+    "any_async": "104/301",
+    "any_module_level": "99/301",
+    "only_module_level": "6/301"
+  }
+}

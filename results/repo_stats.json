@@ -1,0 +1,134 @@
+[
+  {
+    "repo": "fastapi",
+    "commit": "78c4324f0c56bc5282a459978779a9e532d19709",
+    "seconds": 3.0,
+    "nodes": 7155,
+    "edges": 11484,
+    "kinds": {
+      "module": 1166,
+      "class": 725,
+      "function": 4892,
+      "method": 372
+    },
+    "async_by_kind": {
+      "function": 990,
+      "method": 71
+    },
+    "edge_types": {
+      "contains": 5989,
+      "imports": 1620,
+      "calls": 3764,
+      "inherits": 111
+    },
+    "call_resolution": {
+      "import": 1632,
+      "typed": 1064,
+      "module": 735,
+      "super": 27,
+      "unique-name": 153,
+      "local": 86,
+      "self": 67
+    },
+    "lib_functions": 421,
+    "lib_async": 71
+  },
+  {
+    "repo": "rich",
+    "commit": "9d8f9a372cc5916fd4781fec207ced7ddac2f08f",
+    "seconds": 1.31,
+    "nodes": 2282,
+    "edges": 6627,
+    "kinds": {
+      "module": 213,
+      "class": 272,
+      "method": 848,
+      "function": 949
+    },
+    "async_by_kind": {
+      "function": 1
+    },
+    "edge_types": {
+      "contains": 2069,
+      "calls": 3588,
+      "imports": 894,
+      "inherits": 76
+    },
+    "call_resolution": {
+      "import": 1872,
+      "unique-name": 265,
+      "self": 173,
+      "typed": 790,
+      "module": 369,
+      "local": 109,
+      "super": 10
+    },
+    "lib_functions": 888,
+    "lib_async": 0
+  },
+  {
+    "repo": "requests",
+    "commit": "611c6162cbc4ac2020a2f91c7cfa4f3abf9bbb60",
+    "seconds": 0.26,
+    "nodes": 824,
+    "edges": 1963,
+    "kinds": {
+      "class": 96,
+      "module": 37,
+      "function": 181,
+      "method": 510
+    },
+    "async_by_kind": {},
+    "edge_types": {
+      "contains": 787,
+      "imports": 219,
+      "calls": 916,
+      "inherits": 41
+    },
+    "call_resolution": {
+      "module": 64,
+      "import": 547,
+      "super": 2,
+      "self": 77,
+      "unique-name": 55,
+      "local": 23,
+      "typed": 148
+    },
+    "lib_functions": 248,
+    "lib_async": 0
+  },
+  {
+    "repo": "httpx",
+    "commit": "b5addb64f0161ff6bfe94c124ef76f6a1fba5254",
+    "seconds": 0.5,
+    "nodes": 1289,
+    "edges": 3071,
+    "kinds": {
+      "function": 712,
+      "module": 60,
+      "class": 107,
+      "method": 410
+    },
+    "async_by_kind": {
+      "method": 60,
+      "function": 152
+    },
+    "edge_types": {
+      "contains": 1229,
+      "imports": 184,
+      "calls": 1591,
+      "inherits": 67
+    },
+    "call_resolution": {
+      "import": 889,
+      "module": 195,
+      "typed": 266,
+      "self": 111,
+      "unique-name": 76,
+      "local": 38,
+      "super": 16
+    },
+    "lib_functions": 434,
+    "lib_async": 47
+  }
+]

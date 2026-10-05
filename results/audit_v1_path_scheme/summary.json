@@ -1,0 +1,107 @@
+{
+  "n_commits": 127,
+  "n_tasks": 129,
+  "n_tasks_with_py_gold": 128,
+  "tasks_by_repo": {
+    "fastapi": 67,
+    "httpx": 1,
+    "requests": 13,
+    "rich": 48
+  },
+  "all_gold_in_official": [
+    0.625,
+    0.5391,
+    0.7109
+  ],
+  "no_gold_in_official": [
+    0.0859,
+    0.0391,
+    0.1406
+  ],
+  "all_gold_in_ours": [
+    1.0,
+    1.0,
+    1.0
+  ],
+  "no_gold_in_ours": [
+    0.0,
+    0.0,
+    0.0
+  ],
+  "gold_nodes_total": 572,
+  "gold_missing_from_official_by_reason": {
+    "module-level": 61,
+    "async": 51,
+    "other": 2
+  },
+  "official_nodes_reproduced_by_cgl": [
+    0.975,
+    0.9636,
+    0.985
+  ],
+  "official_kinds_total": {
+    "class": 67669,
+    "def": 300316
+  },
+  "official_edge_types_total": {
+    "calls": 452588
+  },
+  "cgl_async_defs_total": 68417,
+  "calls_official_total": 451198,
+  "calls_overlap_total": 146272,
+  "calls_ours_between_official_nodes_total": 219488,
+  "by_repo": {
+    "fastapi": {
+      "n": 66,
+      "all_gold_in_official": [
+        0.5455,
+        0.4242,
+        0.6667
+      ],
+      "all_gold_in_ours": [
+        1.0,
+        1.0,
+        1.0
+      ]
+    },
+    "httpx": {
+      "n": 1,
+      "all_gold_in_official": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "all_gold_in_ours": [
+        1.0,
+        1.0,
+        1.0
+      ]
+    },
+    "requests": {
+      "n": 13,
+      "all_gold_in_official": [
+        0.6923,
+        0.4615,
+        0.9231
+      ],
+      "all_gold_in_ours": [
+        1.0,
+        1.0,
+        1.0
+      ]
+    },
+    "rich": {
+      "n": 48,
+      "all_gold_in_official": [
+        0.7292,
+        0.6042,
+        0.8542
+      ],
+      "all_gold_in_ours": [
+        1.0,
+        1.0,
+        1.0
+      ]
+    }
+  }
+}

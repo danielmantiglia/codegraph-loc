@@ -1,0 +1,122 @@
+{
+ "auditor": "Claude (AI assistant), not a domain expert",
+ "date": "2026-10-05T12:21:41Z",
+ "method": "Each sampled PR diff (non-test files) was read and compared with the automatic labels; enclosing definitions were cross-checked with a separate text-based scan of the pre-fix file.",
+ "cases": [
+  {
+   "task_id": "pymatgen_1482",
+   "pr": 1482,
+   "labels_match": "yes",
+   "chemistry_or_materials": "yes",
+   "note": "Single changed line is inside CovalentBondNN.get_bonded_structure."
+  },
+  {
+   "task_id": "pymatgen_1775",
+   "pr": 1775,
+   "labels_match": "yes",
+   "chemistry_or_materials": "yes",
+   "note": "Imports (incidental) plus new top-level functions, labelled as the module by the new-definition rule."
+  },
+  {
+   "task_id": "pymatgen_2147",
+   "pr": 2147,
+   "labels_match": "yes",
+   "chemistry_or_materials": "yes",
+   "note": "New error check inserted inside QCOutput._check_completion_errors."
+  },
+  {
+   "task_id": "pymatgen_2349",
+   "pr": 2349,
+   "labels_match": "yes",
+   "chemistry_or_materials": "yes",
+   "note": "All six labelled methods change; get_conventional_to_primitive_transformation_matrix only in its docstring."
+  },
+  {
+   "task_id": "pymatgen_2486",
+   "pr": 2486,
+   "labels_match": "yes",
+   "chemistry_or_materials": "yes",
+   "note": "Fix is inside Outcar.read_lcalcpol."
+  },
+  {
+   "task_id": "pymatgen_2762",
+   "pr": 2762,
+   "labels_match": "yes",
+   "chemistry_or_materials": "no",
+   "note": "Class label covers the new methods and the class-level dict entry; the other four methods change. Topic is POTCAR file-hash integrity."
+  },
+  {
+   "task_id": "pymatgen_2891",
+   "pr": 2891,
+   "labels_match": "yes",
+   "chemistry_or_materials": "yes",
+   "note": "Changes in GaussianInput.from_string and GaussianInput.get_cart_coords."
+  },
+  {
+   "task_id": "pymatgen_2939",
+   "pr": 2939,
+   "labels_match": "yes",
+   "chemistry_or_materials": "yes",
+   "note": "Insertion inside GaussianInput.from_string."
+  },
+  {
+   "task_id": "pymatgen_2973",
+   "pr": 2973,
+   "labels_match": "yes",
+   "chemistry_or_materials": "no",
+   "note": "New __copy__/__deepcopy__ methods, labelled as the InputSet class by the new-definition rule. Python copy semantics, not chemistry."
+  },
+  {
+   "task_id": "pymatgen_3109",
+   "pr": 3109,
+   "labels_match": "yes",
+   "chemistry_or_materials": "no",
+   "note": "Variable renames inside IsomorphismMolAtomMapper.uniform_labels."
+  },
+  {
+   "task_id": "pymatgen_3182",
+   "pr": 3182,
+   "labels_match": "partly",
+   "chemistry_or_materials": "no",
+   "note": "All changed functions are labelled, plus one spurious label: the rewritten 'def __repr__' line is inserted after the old body and is attributed to the Composition class. The __contains__ change does alter species/element semantics."
+  },
+  {
+   "task_id": "pymatgen_3254",
+   "pr": 3254,
+   "labels_match": "yes",
+   "chemistry_or_materials": "yes",
+   "note": "Labelled incar/kpoints methods all change; the new MatPESStaticSet class is labelled as the module."
+  },
+  {
+   "task_id": "pymatgen_3266",
+   "pr": 3266,
+   "labels_match": "yes",
+   "chemistry_or_materials": "no",
+   "note": "Attribute renames and a docstring reflow; all labelled methods change."
+  },
+  {
+   "task_id": "pymatgen_3466",
+   "pr": 3466,
+   "labels_match": "partly",
+   "chemistry_or_materials": "yes",
+   "note": "The four fixed functions are labelled, plus three module labels that come only from added __author__/__version__ metadata."
+  },
+  {
+   "task_id": "pymatgen_4093",
+   "pr": 4093,
+   "labels_match": "yes",
+   "chemistry_or_materials": "yes",
+   "note": "Insertion inside PointGroupAnalyzer.get_rotational_symmetry_number."
+  }
+ ],
+ "summary": {
+  "labels_match": {
+   "yes": 13,
+   "partly": 2
+  },
+  "chemistry_or_materials": {
+   "yes": 10,
+   "no": 5
+  }
+ }
+}

@@ -1,0 +1,765 @@
+{
+ "n_responses": 1270,
+ "json_answers": 1270,
+ "answers_with_fewer_than_5_picks": 243,
+ "providers": {
+  "Novita": 1227,
+  "Crusoe": 43
+ },
+ "finish_reasons": {
+  "stop": 1269,
+  "length": 1
+ },
+ "cost_usd": 0.3004,
+ "mean_prompt_tokens": 1614.0,
+ "mean_completion_tokens": 26.5,
+ "splits": {
+  "comp": {
+   "n_tasks_paired": 128,
+   "by_condition": {
+    "official": {
+     "cand_hit": [
+      0.5938,
+      0.5078,
+      0.6797
+     ],
+     "cand_recall": [
+      0.4635,
+      0.3862,
+      0.5411
+     ],
+     "rand_hit@5": [
+      0.1441,
+      0.1142,
+      0.1757
+     ],
+     "rand_recall@5": [
+      0.066,
+      0.0551,
+      0.0769
+     ],
+     "bm25_hit@5": [
+      0.3828,
+      0.3047,
+      0.4609
+     ],
+     "bm25_recall@5": [
+      0.2582,
+      0.1899,
+      0.3287
+     ],
+     "bm25_mrr@5": [
+      0.2307,
+      0.1716,
+      0.2936
+     ],
+     "llm_hit@1": [
+      0.4297,
+      0.3438,
+      0.5156
+     ],
+     "llm_hit@5": [
+      0.5547,
+      0.4688,
+      0.6406
+     ],
+     "llm_recall@5": [
+      0.408,
+      0.3295,
+      0.4855
+     ],
+     "llm_mrr@5": [
+      0.4807,
+      0.4,
+      0.5639
+     ],
+     "n_picks": [
+      4.5312,
+      4.3438,
+      4.7031
+     ],
+     "mean_candidates": 35.3
+    },
+    "cgl": {
+     "cand_hit": [
+      0.6328,
+      0.5547,
+      0.7188
+     ],
+     "cand_recall": [
+      0.4923,
+      0.4135,
+      0.569
+     ],
+     "rand_hit@5": [
+      0.1634,
+      0.1316,
+      0.1976
+     ],
+     "rand_recall@5": [
+      0.0714,
+      0.0599,
+      0.0826
+     ],
+     "bm25_hit@5": [
+      0.3828,
+      0.2969,
+      0.4688
+     ],
+     "bm25_recall@5": [
+      0.2606,
+      0.192,
+      0.3308
+     ],
+     "bm25_mrr@5": [
+      0.2436,
+      0.1818,
+      0.3089
+     ],
+     "llm_hit@1": [
+      0.4453,
+      0.3594,
+      0.5312
+     ],
+     "llm_hit@5": [
+      0.5703,
+      0.4844,
+      0.6562
+     ],
+     "llm_recall@5": [
+      0.4083,
+      0.3306,
+      0.4852
+     ],
+     "llm_mrr@5": [
+      0.4931,
+      0.4116,
+      0.5773
+     ],
+     "n_picks": [
+      4.4453,
+      4.2266,
+      4.6484
+     ],
+     "mean_candidates": 35.5
+    }
+   },
+   "paired_differences": {
+    "cgl - official [cand_hit]": [
+     0.0391,
+     -0.0391,
+     0.1172
+    ],
+    "cgl - official [cand_recall]": [
+     0.0288,
+     -0.0376,
+     0.0966
+    ],
+    "cgl - official [bm25_hit@5]": [
+     0.0,
+     -0.0625,
+     0.0703
+    ],
+    "cgl - official [llm_hit@1]": [
+     0.0156,
+     -0.0547,
+     0.0859
+    ],
+    "cgl - official [llm_hit@5]": [
+     0.0156,
+     -0.0547,
+     0.0938
+    ],
+    "cgl - official [llm_recall@5]": [
+     0.0003,
+     -0.057,
+     0.055
+    ],
+    "cgl - official [llm_mrr@5]": [
+     0.0124,
+     -0.0531,
+     0.0779
+    ],
+    "llm - bm25 [official, hit@5]": [
+     0.1719,
+     0.1016,
+     0.25
+    ],
+    "llm - bm25 [official, recall@5]": [
+     0.1498,
+     0.09,
+     0.2142
+    ],
+    "llm - bm25 [official, mrr@5]": [
+     0.25,
+     0.1753,
+     0.3246
+    ],
+    "llm - random [official, hit@5]": [
+     0.4105,
+     0.341,
+     0.479
+    ],
+    "llm - random [official, recall@5]": [
+     0.342,
+     0.2738,
+     0.4093
+    ],
+    "llm - bm25 [cgl, hit@5]": [
+     0.1875,
+     0.1092,
+     0.2734
+    ],
+    "llm - bm25 [cgl, recall@5]": [
+     0.1477,
+     0.0851,
+     0.2142
+    ],
+    "llm - bm25 [cgl, mrr@5]": [
+     0.2495,
+     0.1764,
+     0.3273
+    ],
+    "llm - random [cgl, hit@5]": [
+     0.4069,
+     0.3372,
+     0.4783
+    ],
+    "llm - random [cgl, recall@5]": [
+     0.337,
+     0.2715,
+     0.4034
+    ],
+    "cgl - official [llm_hit@5 | gold in both candidate sets, n=66]": [
+     -0.0303,
+     -0.0909,
+     0.0303
+    ],
+    "cgl - official [llm_hit@5 | both served by Novita, n=116]": [
+     0.0086,
+     -0.069,
+     0.0862
+    ],
+    "cgl - official [llm_recall@5 | both served by Novita, n=116]": [
+     -0.002,
+     -0.0581,
+     0.0549
+    ]
+   },
+   "llm_hit@5_given_gold_in_candidates": {
+    "official": [
+     0.9342,
+     0.8684,
+     0.9868
+    ],
+    "cgl": [
+     0.9012,
+     0.8272,
+     0.963
+    ]
+   },
+   "answers_with_fewer_than_5_picks": {
+    "official": 24,
+    "cgl": 24
+   }
+  },
+  "public": {
+   "n_tasks_paired": 507,
+   "by_condition": {
+    "official": {
+     "cand_hit": [
+      0.7574,
+      0.7199,
+      0.7949
+     ],
+     "cand_recall": [
+      0.5196,
+      0.4853,
+      0.5537
+     ],
+     "rand_hit@5": [
+      0.2546,
+      0.2333,
+      0.2762
+     ],
+     "rand_recall@5": [
+      0.0874,
+      0.0813,
+      0.0933
+     ],
+     "bm25_hit@5": [
+      0.5641,
+      0.5187,
+      0.6055
+     ],
+     "bm25_recall@5": [
+      0.3124,
+      0.2806,
+      0.3459
+     ],
+     "bm25_mrr@5": [
+      0.4,
+      0.3631,
+      0.4362
+     ],
+     "llm_hit@1": [
+      0.4892,
+      0.4458,
+      0.5325
+     ],
+     "llm_hit@5": [
+      0.7002,
+      0.6607,
+      0.7416
+     ],
+     "llm_recall@5": [
+      0.4153,
+      0.3829,
+      0.4495
+     ],
+     "llm_mrr@5": [
+      0.5753,
+      0.5361,
+      0.6142
+     ],
+     "n_picks": [
+      4.3609,
+      4.2387,
+      4.4734
+     ],
+     "mean_candidates": 30.2
+    },
+    "cgl": {
+     "cand_hit": [
+      0.8264,
+      0.7929,
+      0.86
+     ],
+     "cand_recall": [
+      0.6361,
+      0.6019,
+      0.6686
+     ],
+     "rand_hit@5": [
+      0.2929,
+      0.2702,
+      0.3145
+     ],
+     "rand_recall@5": [
+      0.1029,
+      0.0974,
+      0.1085
+     ],
+     "bm25_hit@5": [
+      0.6016,
+      0.5602,
+      0.643
+     ],
+     "bm25_recall@5": [
+      0.3574,
+      0.3243,
+      0.3914
+     ],
+     "bm25_mrr@5": [
+      0.4255,
+      0.3882,
+      0.4635
+     ],
+     "llm_hit@1": [
+      0.5641,
+      0.5207,
+      0.6075
+     ],
+     "llm_hit@5": [
+      0.7633,
+      0.7258,
+      0.7988
+     ],
+     "llm_recall@5": [
+      0.4979,
+      0.4639,
+      0.5312
+     ],
+     "llm_mrr@5": [
+      0.6474,
+      0.6094,
+      0.6844
+     ],
+     "n_picks": [
+      4.497,
+      4.3944,
+      4.5976
+     ],
+     "mean_candidates": 31.3
+    }
+   },
+   "paired_differences": {
+    "cgl - official [cand_hit]": [
+     0.069,
+     0.0394,
+     0.0986
+    ],
+    "cgl - official [cand_recall]": [
+     0.1165,
+     0.0871,
+     0.1459
+    ],
+    "cgl - official [bm25_hit@5]": [
+     0.0375,
+     0.0079,
+     0.069
+    ],
+    "cgl - official [llm_hit@1]": [
+     0.075,
+     0.0375,
+     0.1124
+    ],
+    "cgl - official [llm_hit@5]": [
+     0.0631,
+     0.0296,
+     0.0966
+    ],
+    "cgl - official [llm_recall@5]": [
+     0.0825,
+     0.0539,
+     0.1115
+    ],
+    "cgl - official [llm_mrr@5]": [
+     0.0721,
+     0.0395,
+     0.1053
+    ],
+    "llm - bm25 [official, hit@5]": [
+     0.1361,
+     0.1045,
+     0.1696
+    ],
+    "llm - bm25 [official, recall@5]": [
+     0.1029,
+     0.0784,
+     0.128
+    ],
+    "llm - bm25 [official, mrr@5]": [
+     0.1753,
+     0.1391,
+     0.2112
+    ],
+    "llm - random [official, hit@5]": [
+     0.4456,
+     0.4125,
+     0.4794
+    ],
+    "llm - random [official, recall@5]": [
+     0.328,
+     0.299,
+     0.3558
+    ],
+    "llm - bm25 [cgl, hit@5]": [
+     0.1617,
+     0.1243,
+     0.2012
+    ],
+    "llm - bm25 [cgl, recall@5]": [
+     0.1404,
+     0.1118,
+     0.1693
+    ],
+    "llm - bm25 [cgl, mrr@5]": [
+     0.2219,
+     0.182,
+     0.2617
+    ],
+    "llm - random [cgl, hit@5]": [
+     0.4704,
+     0.4397,
+     0.5024
+    ],
+    "llm - random [cgl, recall@5]": [
+     0.3949,
+     0.3653,
+     0.4261
+    ],
+    "cgl - official [llm_hit@5 | gold in both candidate sets, n=367]": [
+     -0.0082,
+     -0.0327,
+     0.0163
+    ],
+    "cgl - official [llm_hit@5 | both served by Novita, n=478]": [
+     0.0649,
+     0.0293,
+     0.1004
+    ],
+    "cgl - official [llm_recall@5 | both served by Novita, n=478]": [
+     0.0814,
+     0.0517,
+     0.1111
+    ]
+   },
+   "llm_hit@5_given_gold_in_candidates": {
+    "official": [
+     0.9245,
+     0.8958,
+     0.9505
+    ],
+    "cgl": [
+     0.9236,
+     0.8974,
+     0.9475
+    ]
+   },
+   "answers_with_fewer_than_5_picks": {
+    "official": 106,
+    "cgl": 89
+   }
+  },
+  "all": {
+   "n_tasks_paired": 635,
+   "by_condition": {
+    "official": {
+     "cand_hit": [
+      0.7244,
+      0.6882,
+      0.7591
+     ],
+     "cand_recall": [
+      0.5083,
+      0.4771,
+      0.5393
+     ],
+     "rand_hit@5": [
+      0.2324,
+      0.2135,
+      0.2508
+     ],
+     "rand_recall@5": [
+      0.0831,
+      0.0776,
+      0.0884
+     ],
+     "bm25_hit@5": [
+      0.5276,
+      0.4881,
+      0.5669
+     ],
+     "bm25_recall@5": [
+      0.3015,
+      0.2723,
+      0.3315
+     ],
+     "bm25_mrr@5": [
+      0.3659,
+      0.3332,
+      0.3995
+     ],
+     "llm_hit@1": [
+      0.4772,
+      0.4378,
+      0.5165
+     ],
+     "llm_hit@5": [
+      0.6709,
+      0.6346,
+      0.7071
+     ],
+     "llm_recall@5": [
+      0.4139,
+      0.3831,
+      0.4449
+     ],
+     "llm_mrr@5": [
+      0.5562,
+      0.5224,
+      0.5906
+     ],
+     "n_picks": [
+      4.3953,
+      4.2929,
+      4.4945
+     ],
+     "mean_candidates": 31.2
+    },
+    "cgl": {
+     "cand_hit": [
+      0.7874,
+      0.7559,
+      0.8189
+     ],
+     "cand_recall": [
+      0.6071,
+      0.575,
+      0.6378
+     ],
+     "rand_hit@5": [
+      0.2668,
+      0.2481,
+      0.2861
+     ],
+     "rand_recall@5": [
+      0.0966,
+      0.0915,
+      0.1017
+     ],
+     "bm25_hit@5": [
+      0.5575,
+      0.5197,
+      0.5953
+     ],
+     "bm25_recall@5": [
+      0.3379,
+      0.3075,
+      0.3689
+     ],
+     "bm25_mrr@5": [
+      0.3888,
+      0.3555,
+      0.4217
+     ],
+     "llm_hit@1": [
+      0.5402,
+      0.5024,
+      0.578
+     ],
+     "llm_hit@5": [
+      0.7244,
+      0.6898,
+      0.7591
+     ],
+     "llm_recall@5": [
+      0.4798,
+      0.4493,
+      0.5117
+     ],
+     "llm_mrr@5": [
+      0.6163,
+      0.5809,
+      0.6502
+     ],
+     "n_picks": [
+      4.4866,
+      4.3937,
+      4.5748
+     ],
+     "mean_candidates": 32.2
+    }
+   },
+   "paired_differences": {
+    "cgl - official [cand_hit]": [
+     0.063,
+     0.0346,
+     0.0929
+    ],
+    "cgl - official [cand_recall]": [
+     0.0988,
+     0.0715,
+     0.1264
+    ],
+    "cgl - official [bm25_hit@5]": [
+     0.0299,
+     0.0031,
+     0.0567
+    ],
+    "cgl - official [llm_hit@1]": [
+     0.063,
+     0.0299,
+     0.0976
+    ],
+    "cgl - official [llm_hit@5]": [
+     0.0535,
+     0.022,
+     0.085
+    ],
+    "cgl - official [llm_recall@5]": [
+     0.066,
+     0.0408,
+     0.0917
+    ],
+    "cgl - official [llm_mrr@5]": [
+     0.0601,
+     0.0316,
+     0.0889
+    ],
+    "llm - bm25 [official, hit@5]": [
+     0.1433,
+     0.1134,
+     0.1732
+    ],
+    "llm - bm25 [official, recall@5]": [
+     0.1124,
+     0.0899,
+     0.1351
+    ],
+    "llm - bm25 [official, mrr@5]": [
+     0.1904,
+     0.1584,
+     0.2229
+    ],
+    "llm - random [official, hit@5]": [
+     0.4385,
+     0.4085,
+     0.4687
+    ],
+    "llm - random [official, recall@5]": [
+     0.3308,
+     0.3045,
+     0.3582
+    ],
+    "llm - bm25 [cgl, hit@5]": [
+     0.1669,
+     0.1323,
+     0.2031
+    ],
+    "llm - bm25 [cgl, recall@5]": [
+     0.1419,
+     0.116,
+     0.1685
+    ],
+    "llm - bm25 [cgl, mrr@5]": [
+     0.2274,
+     0.1938,
+     0.2624
+    ],
+    "llm - random [cgl, hit@5]": [
+     0.4576,
+     0.4291,
+     0.4856
+    ],
+    "llm - random [cgl, recall@5]": [
+     0.3832,
+     0.3558,
+     0.4108
+    ],
+    "cgl - official [llm_hit@5 | gold in both candidate sets, n=433]": [
+     -0.0115,
+     -0.0346,
+     0.0115
+    ],
+    "cgl - official [llm_hit@5 | both served by Novita, n=594]": [
+     0.0539,
+     0.0202,
+     0.0859
+    ],
+    "cgl - official [llm_recall@5 | both served by Novita, n=594]": [
+     0.0651,
+     0.0392,
+     0.091
+    ]
+   },
+   "llm_hit@5_given_gold_in_candidates": {
+    "official": [
+     0.9261,
+     0.9022,
+     0.95
+    ],
+    "cgl": [
+     0.92,
+     0.896,
+     0.942
+    ]
+   },
+   "answers_with_fewer_than_5_picks": {
+    "official": 130,
+    "cgl": 113
+   }
+  }
+ }
+}

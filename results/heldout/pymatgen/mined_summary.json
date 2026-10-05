@@ -1,0 +1,9 @@
+{
+  "pymatgen": {
+    "candidates": 680,
+    "fix_like": 259,
+    "any_async": "0/680",
+    "any_module_level": "138/680",
+    "only_module_level": "26/680"
+  }
+}
