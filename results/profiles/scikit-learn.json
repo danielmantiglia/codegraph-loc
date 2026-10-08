@@ -1,0 +1,42 @@
+{
+ "repository": "scikit-learn",
+ "package": "sklearn",
+ "since": "2019-01-01",
+ "until": "2026-09-30",
+ "head": "c1f21786a8dc523c56ebb24f53b09dc14a57ea4d 2026-10-05",
+ "elapsed_s": 80.4,
+ "n_fixes": 2397,
+ "n_edit_locations": 7624,
+ "edit_locations": {
+  "sync functions/methods": 5591,
+  "async functions/methods": 0,
+  "classes (class body)": 1376,
+  "module-level code (incl. new top-level definitions)": 657
+ },
+ "share_of_edit_locations": {
+  "async": 0.0,
+  "module-level": 0.0862
+ },
+ "share_of_fixes": {
+  "touching async code": [
+   0.0,
+   0.0,
+   0.0
+  ],
+  "touching module-level code": [
+   0.2537,
+   0.2353,
+   0.272
+  ],
+  "fully representable by a released-style graph": [
+   0.7463,
+   0.728,
+   0.7647
+  ],
+  "not representable at all by a released-style graph": [
+   0.0634,
+   0.0542,
+   0.0734
+  ]
+ }
+}

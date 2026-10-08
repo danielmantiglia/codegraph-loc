@@ -1,0 +1,42 @@
+{
+ "repository": "sphinx",
+ "package": "sphinx",
+ "since": "2019-01-01",
+ "until": "2026-09-30",
+ "head": "b04a2101295ac3fb725b16111eda0284b6da4cca 2026-09-18",
+ "elapsed_s": 24.0,
+ "n_fixes": 386,
+ "n_edit_locations": 1510,
+ "edit_locations": {
+  "sync functions/methods": 1195,
+  "async functions/methods": 0,
+  "classes (class body)": 152,
+  "module-level code (incl. new top-level definitions)": 163
+ },
+ "share_of_edit_locations": {
+  "async": 0.0,
+  "module-level": 0.1079
+ },
+ "share_of_fixes": {
+  "touching async code": [
+   0.0,
+   0.0,
+   0.0
+  ],
+  "touching module-level code": [
+   0.3601,
+   0.3135,
+   0.4067
+  ],
+  "fully representable by a released-style graph": [
+   0.6399,
+   0.5933,
+   0.6865
+  ],
+  "not representable at all by a released-style graph": [
+   0.0389,
+   0.0207,
+   0.0596
+  ]
+ }
+}

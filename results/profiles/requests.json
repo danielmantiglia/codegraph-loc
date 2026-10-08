@@ -1,0 +1,42 @@
+{
+ "repository": "requests",
+ "package": "requests",
+ "since": "2019-01-01",
+ "until": "2026-09-30",
+ "head": "611c6162cbc4ac2020a2f91c7cfa4f3abf9bbb60 2026-09-21",
+ "elapsed_s": 1.5,
+ "n_fixes": 43,
+ "n_edit_locations": 74,
+ "edit_locations": {
+  "sync functions/methods": 55,
+  "async functions/methods": 0,
+  "classes (class body)": 2,
+  "module-level code (incl. new top-level definitions)": 17
+ },
+ "share_of_edit_locations": {
+  "async": 0.0,
+  "module-level": 0.2297
+ },
+ "share_of_fixes": {
+  "touching async code": [
+   0.0,
+   0.0,
+   0.0
+  ],
+  "touching module-level code": [
+   0.3256,
+   0.186,
+   0.4651
+  ],
+  "fully representable by a released-style graph": [
+   0.6744,
+   0.5349,
+   0.814
+  ],
+  "not representable at all by a released-style graph": [
+   0.093,
+   0.0233,
+   0.186
+  ]
+ }
+}

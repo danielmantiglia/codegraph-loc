@@ -1,0 +1,42 @@
+{
+ "repository": "matplotlib",
+ "package": "matplotlib",
+ "since": "2019-01-01",
+ "until": "2026-09-30",
+ "head": "9191bfb3cf0b4766d9d4f405a06c3144311632fb 2026-10-05",
+ "elapsed_s": 150.1,
+ "n_fixes": 1600,
+ "n_edit_locations": 4657,
+ "edit_locations": {
+  "sync functions/methods": 3828,
+  "async functions/methods": 0,
+  "classes (class body)": 469,
+  "module-level code (incl. new top-level definitions)": 360
+ },
+ "share_of_edit_locations": {
+  "async": 0.0,
+  "module-level": 0.0773
+ },
+ "share_of_fixes": {
+  "touching async code": [
+   0.0,
+   0.0,
+   0.0
+  ],
+  "touching module-level code": [
+   0.2019,
+   0.1819,
+   0.2219
+  ],
+  "fully representable by a released-style graph": [
+   0.7981,
+   0.7781,
+   0.8181
+  ],
+  "not representable at all by a released-style graph": [
+   0.0269,
+   0.0194,
+   0.035
+  ]
+ }
+}

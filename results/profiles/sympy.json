@@ -1,0 +1,42 @@
+{
+ "repository": "sympy",
+ "package": "sympy",
+ "since": "2019-01-01",
+ "until": "2026-09-30",
+ "head": "319ea7a6186edf88bc23d502917242b10314ae51 2026-10-04",
+ "elapsed_s": 141.2,
+ "n_fixes": 2325,
+ "n_edit_locations": 6583,
+ "edit_locations": {
+  "sync functions/methods": 4985,
+  "async functions/methods": 0,
+  "classes (class body)": 929,
+  "module-level code (incl. new top-level definitions)": 669
+ },
+ "share_of_edit_locations": {
+  "async": 0.0,
+  "module-level": 0.1016
+ },
+ "share_of_fixes": {
+  "touching async code": [
+   0.0,
+   0.0,
+   0.0
+  ],
+  "touching module-level code": [
+   0.2353,
+   0.2189,
+   0.2525
+  ],
+  "fully representable by a released-style graph": [
+   0.7647,
+   0.7475,
+   0.7811
+  ],
+  "not representable at all by a released-style graph": [
+   0.0667,
+   0.0563,
+   0.0774
+  ]
+ }
+}

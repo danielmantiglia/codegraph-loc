@@ -1,0 +1,42 @@
+{
+ "repository": "pymatgen",
+ "package": "pymatgen",
+ "since": "2019-01-01",
+ "until": "2026-03-02",
+ "head": "975fed926f3b2606648ddb57679ddceaeac10d8a 2026-10-05",
+ "elapsed_s": 86.8,
+ "n_fixes": 676,
+ "n_edit_locations": 2487,
+ "edit_locations": {
+  "sync functions/methods": 2063,
+  "async functions/methods": 0,
+  "classes (class body)": 266,
+  "module-level code (incl. new top-level definitions)": 158
+ },
+ "share_of_edit_locations": {
+  "async": 0.0,
+  "module-level": 0.0635
+ },
+ "share_of_fixes": {
+  "touching async code": [
+   0.0,
+   0.0,
+   0.0
+  ],
+  "touching module-level code": [
+   0.2041,
+   0.176,
+   0.2367
+  ],
+  "fully representable by a released-style graph": [
+   0.7959,
+   0.7633,
+   0.824
+  ],
+  "not representable at all by a released-style graph": [
+   0.0385,
+   0.0251,
+   0.0533
+  ]
+ }
+}

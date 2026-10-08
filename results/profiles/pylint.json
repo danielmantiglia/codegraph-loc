@@ -1,0 +1,42 @@
+{
+ "repository": "pylint",
+ "package": "pylint",
+ "since": "2019-01-01",
+ "until": "2026-09-30",
+ "head": "cb8d2b59dc359d42508319232988d4d8a7fbc059 2026-10-04",
+ "elapsed_s": 46.1,
+ "n_fixes": 1257,
+ "n_edit_locations": 2856,
+ "edit_locations": {
+  "sync functions/methods": 2095,
+  "async functions/methods": 0,
+  "classes (class body)": 361,
+  "module-level code (incl. new top-level definitions)": 400
+ },
+ "share_of_edit_locations": {
+  "async": 0.0,
+  "module-level": 0.1401
+ },
+ "share_of_fixes": {
+  "touching async code": [
+   0.0,
+   0.0,
+   0.0
+  ],
+  "touching module-level code": [
+   0.2737,
+   0.249,
+   0.2967
+  ],
+  "fully representable by a released-style graph": [
+   0.7263,
+   0.7033,
+   0.751
+  ],
+  "not representable at all by a released-style graph": [
+   0.0438,
+   0.0326,
+   0.0549
+  ]
+ }
+}

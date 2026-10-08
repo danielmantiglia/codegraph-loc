@@ -1,14 +1,14 @@
-"""Paper figures (aggregates only; no competition text is drawn).
+"""Paper figures (aggregates only; no competition text is drawn). Numbered as in the paper.
 
-Figure 1 — forest plot: our graph minus the released graph (or its emulated schema), per split,
-           for BM25 Recall@10, BM25+PPR fusion with `calls`-only propagation Recall@10 (the
-           pre-registered H1 contrast) and Gemma 4 Hit@5. Development and held-out splits are
-           grouped; a filled marker means the 95% CI excludes zero.
-Figure 2 — (a) Gemma's Hit@5 gain against the gain in candidate coverage, per split, with the
-           identity line; (b) Gemma's Hit@5 when a gold location is among its candidates, per
-           split and graph.
-All plotted numbers are written to results/figures/figure_data.json (paired bootstrap 95% CIs,
-5,000 resamples, seed 0).
+Figure 1 (fig_profiles)  — share of fixes touching async definitions / module-level code per repository
+                           (results/profiles/summary.json from scripts/16_profile_repos.py).
+Figure 2 (fig_selection) — (a) Gemma's Hit@5 gain against the gain in candidate coverage, per split, with the
+                           identity line; (b) Gemma's Hit@5 when a gold location is among its candidates, per
+                           split and graph.
+Figure 3 (fig_forest)    — forest plot: our graph minus the released graph (or its emulated schema), per split,
+                           for BM25 Recall@10, BM25+PPR fusion with `calls`-only propagation Recall@10 (the
+                           pre-registered H1 contrast) and Gemma 4 Hit@5; filled marker = 95% CI excludes zero.
+Plotted numbers are written to results/figures/figure_data.json (paired bootstrap 95% CIs, 5,000 resamples, seed 0).
 
 Usage:  python scripts/14_figures.py              # recompute from per-task records, then draw
         python scripts/14_figures.py --from-data  # redraw from results/figures/figure_data.json
@@ -115,7 +115,7 @@ def pts(v):
 
 
 # ----------------------------------------------------------------------------- figure 1
-def figure1(ret, llm):
+def fig_forest(ret, llm):
     rows = [k for k, *_ in SPLITS if k in ret]
     # vertical layout: group headers + rows, top to bottom
     layout, y = [], 0.0
@@ -191,11 +191,11 @@ def figure1(ret, llm):
                fontsize=7.2, labelcolor=INK2, handletextpad=0.3, columnspacing=1.2)
     fig.text(0.985, -0.005, "Difference in points: codegraph-loc minus the released graph (or its schema)", ha="right",
              va="bottom", fontsize=7.2, color=MUTED)
-    save(fig, "fig1_coverage_forest")
+    save(fig, "figure3_coverage_forest")
 
 
 # ----------------------------------------------------------------------------- figure 2
-def figure2(llm):
+def fig_selection(llm):
     ks = [k for k, *_ in SPLITS if k in llm]
     fig, (a, b) = plt.subplots(1, 2, figsize=(7.2, 2.9), gridspec_kw={"width_ratios": [1.05, 1], "wspace": 0.42})
     # (a) gain tracks coverage
@@ -266,7 +266,80 @@ def figure2(llm):
     b.spines["left"].set_visible(False)
     b.tick_params(axis="y", left=False)
     a.tick_params(axis="y", labelsize=7.5, size=3, width=0.6)
-    save(fig, "fig2_coverage_vs_selection")
+    save(fig, "figure2_coverage_vs_selection")
+
+
+
+# ----------------------------------------------------------------------------- figure 3
+DEV_REPOS = ["fastapi", "httpx", "requests", "rich"]
+HELD_REPOS = ["astropy", "django", "flask", "matplotlib", "pylint", "pytest", "scikit-learn", "seaborn",
+              "sphinx", "sympy", "xarray", "pymatgen"]
+
+
+def fig_profiles(prof):
+    """Share of fixes touching async definitions / module-level code, per repository (cgl-profile)."""
+    layout, y = [], 0.0
+    for g, title, names in (("dev", "Development repositories", DEV_REPOS),
+                            ("held", "Held-out repositories", HELD_REPOS)):
+        names = [n for n in names if n in prof]
+        if not names:
+            continue
+        layout.append(("header", title, y, g))
+        y += 0.8
+        for n in names:
+            layout.append(("row", n, y, g))
+            y += 0.62
+        y += 0.3
+    ymax = y - 0.3 - 0.2
+    panels = [("touching async code", "Fixes touching async code"),
+              ("touching module-level code", "Fixes touching module-level code")]
+    fig = plt.figure(figsize=(7.2, 0.25 * ymax + 1.0))
+    gs = fig.add_gridspec(1, 3, width_ratios=[1.05, 1, 1], wspace=0.16)
+    lab_ax = fig.add_subplot(gs[0])
+    axes = [fig.add_subplot(gs[i + 1], sharey=lab_ax) for i in range(2)]
+    for ax in [lab_ax] + axes:
+        ax.set_ylim(ymax + 0.2, -0.5)
+        ax.patch.set_alpha(0)
+    lab_ax.axis("off")
+    held = [yy for kind, _, yy, g in layout if g == "held"]
+    if held:
+        tr = blended_transform_factory(fig.transFigure, lab_ax.transData)
+        fig.add_artist(Rectangle((0.0, min(held) - 0.4), 1.0, max(held) - min(held) + 0.4 + 0.33,
+                                 transform=tr, facecolor=BAND, edgecolor="none", zorder=-1))
+    for kind, what, yy, g in layout:
+        tr = lab_ax.get_yaxis_transform()
+        if kind == "header":
+            lab_ax.text(0.0, yy, what.upper(), fontsize=6.8, fontweight="bold", color=ACCENT if g == "held" else INK2,
+                        va="center", ha="left", transform=tr)
+        else:
+            lab_ax.text(0.04, yy, what, fontsize=8, color=INK, va="center", ha="left", transform=tr)
+            lab_ax.text(0.98, yy, f"{prof[what]['n_fixes']:,} fixes", fontsize=6.8, color=MUTED, va="center",
+                        ha="right", transform=tr)
+    for ax, (key, title) in zip(axes, panels):
+        ax.set_xlim(0, 50)
+        for xv in (10, 20, 30, 40):
+            ax.axvline(xv, color=GRID, lw=0.6, zorder=1)
+        ax.axvline(0, color=ZERO, lw=0.8, zorder=2)
+        for kind, n, yy, g in layout:
+            if kind != "row":
+                continue
+            m, lo, hi = pts(prof[n]["share_of_fixes"][key])
+            col = ACCENT if g == "held" else INK
+            ax.plot([lo, hi], [yy, yy], color=col, lw=1.2, solid_capstyle="butt", zorder=3)
+            ax.plot(m, yy, "o", ms=4.8, mfc=col, mec="white", mew=0.8, zorder=4)
+            halo = [patheffects.withStroke(linewidth=2.4, foreground=BAND if g == "held" else "white")]
+            ax.text(hi + 1.2, yy, f"{m:.0f}%", fontsize=6.6, color=col, ha="left", va="center", zorder=5,
+                    path_effects=halo)
+        ax.set_title(title, fontsize=8.6, color=INK, loc="left", pad=6, fontweight="bold")
+        for sp in ("top", "right", "left"):
+            ax.spines[sp].set_visible(False)
+        ax.tick_params(axis="y", left=False, labelleft=False)
+        ax.set_xticks([0, 10, 20, 30, 40])
+        ax.set_xticklabels(["0%", "10%", "20%", "30%", "40%"])
+    fig.text(0.985, -0.005, "Code+test commits, 2019 to Sep 2026 (pymatgen: to Mar 2026); 95% bootstrap CIs. "
+             "Module-level code includes new top-level definitions.", ha="right", va="bottom", fontsize=6.8,
+             color=MUTED)
+    save(fig, "figure1_fix_profiles")
 
 
 def main():
@@ -287,9 +360,12 @@ def main():
         ret, llm = retrieval_contrasts(), llm_numbers()
     data_file.write_text(json.dumps({"retrieval_recall@10": ret, "gemma": llm}, indent=1))
     setup()
-    figure1(ret, llm)
+    fig_forest(ret, llm)
     if llm:
-        figure2(llm)
+        fig_selection(llm)
+    prof_file = Path("results/profiles/summary.json")
+    if prof_file.exists():
+        fig_profiles(json.load(open(prof_file)))
     print("figures written to", OUT, "| splits:", sorted(set(ret) | set(llm)))
 
 

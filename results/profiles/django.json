@@ -1,0 +1,42 @@
+{
+ "repository": "django",
+ "package": "django",
+ "since": "2019-01-01",
+ "until": "2026-09-30",
+ "head": "a461af8ce48762d7ec602260aaff81014ddccbcb 2026-10-03",
+ "elapsed_s": 92.8,
+ "n_fixes": 2909,
+ "n_edit_locations": 6676,
+ "edit_locations": {
+  "sync functions/methods": 4858,
+  "async functions/methods": 70,
+  "classes (class body)": 1183,
+  "module-level code (incl. new top-level definitions)": 565
+ },
+ "share_of_edit_locations": {
+  "async": 0.0105,
+  "module-level": 0.0846
+ },
+ "share_of_fixes": {
+  "touching async code": [
+   0.0165,
+   0.012,
+   0.021
+  ],
+  "touching module-level code": [
+   0.1657,
+   0.1523,
+   0.1794
+  ],
+  "fully representable by a released-style graph": [
+   0.8206,
+   0.8065,
+   0.834
+  ],
+  "not representable at all by a released-style graph": [
+   0.0474,
+   0.0402,
+   0.0554
+  ]
+ }
+}

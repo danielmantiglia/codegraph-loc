@@ -1,0 +1,42 @@
+{
+ "repository": "rich",
+ "package": "rich",
+ "since": "2019-01-01",
+ "until": "2026-09-30",
+ "head": "9d8f9a372cc5916fd4781fec207ced7ddac2f08f 2026-06-23",
+ "elapsed_s": 11.2,
+ "n_fixes": 289,
+ "n_edit_locations": 994,
+ "edit_locations": {
+  "sync functions/methods": 713,
+  "async functions/methods": 0,
+  "classes (class body)": 132,
+  "module-level code (incl. new top-level definitions)": 149
+ },
+ "share_of_edit_locations": {
+  "async": 0.0,
+  "module-level": 0.1499
+ },
+ "share_of_fixes": {
+  "touching async code": [
+   0.0,
+   0.0,
+   0.0
+  ],
+  "touching module-level code": [
+   0.4014,
+   0.3426,
+   0.4602
+  ],
+  "fully representable by a released-style graph": [
+   0.5986,
+   0.5398,
+   0.6574
+  ],
+  "not representable at all by a released-style graph": [
+   0.0692,
+   0.0415,
+   0.1003
+  ]
+ }
+}

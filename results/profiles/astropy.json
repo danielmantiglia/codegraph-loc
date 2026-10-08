@@ -1,0 +1,42 @@
+{
+ "repository": "astropy",
+ "package": "astropy",
+ "since": "2019-01-01",
+ "until": "2026-09-30",
+ "head": "b9c7d5a5029209fda67dd8de5cbff14fe3e52db2 2026-10-05",
+ "elapsed_s": 79.0,
+ "n_fixes": 1537,
+ "n_edit_locations": 4370,
+ "edit_locations": {
+  "sync functions/methods": 3264,
+  "async functions/methods": 0,
+  "classes (class body)": 555,
+  "module-level code (incl. new top-level definitions)": 551
+ },
+ "share_of_edit_locations": {
+  "async": 0.0,
+  "module-level": 0.1261
+ },
+ "share_of_fixes": {
+  "touching async code": [
+   0.0,
+   0.0,
+   0.0
+  ],
+  "touching module-level code": [
+   0.2837,
+   0.2602,
+   0.3071
+  ],
+  "fully representable by a released-style graph": [
+   0.7163,
+   0.6929,
+   0.7398
+  ],
+  "not representable at all by a released-style graph": [
+   0.0631,
+   0.052,
+   0.0755
+  ]
+ }
+}

@@ -38,3 +38,7 @@ results/llm/superseded/responses_before_pr_fix.jsonl
 
 # run logs
 *.log
+
+# Experiment 5 conversations contain issue texts (and, for competition tasks, competition code): local only
+results/agent/*/transcripts.jsonl
+results/agent/*/*/transcripts.jsonl

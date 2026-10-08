@@ -1,12 +1,35 @@
 # codegraph-loc
 
-**What should a code graph contain?** An open code-graph generator and a function-level
-bug-localization benchmark for local coding agents such as Gemma 4.
+**What should a code graph contain?** An open code-graph generator, a function-level
+bug-localization benchmark and a fix-profile tool for local coding agents such as Gemma 4.
 
-Work in progress for the Kaggle *Google – The Gemma 4 Developer Agent* Paper Track (2026).
+Code for the Kaggle *Google – The Gemma 4 Developer Agent* Paper Track writeup (2026).
 License: Apache-2.0.
 
-## What is here (v0.4, 5 Oct 2026)
+## Quick start
+
+```bash
+pip install "git+https://github.com/danielmantiglia/codegraph-loc"
+
+# Which kinds of code do this repository's bug fixes touch, and can a graph without
+# async definitions or module nodes represent them? (needs a git clone with history)
+cgl-profile path/to/repo
+```
+
+```python
+import json
+from cgl import build_graph, to_node_link
+from cgl.graph import official_view
+
+G = build_graph("path/to/repo")   # every module, class, function and method (async included), typed edges
+json.dump(to_node_link(official_view(G)), open("graph.json", "w"))   # released node-link schema and ids
+```
+
+Example (`cgl-profile` on httpx, commits 2019 to Sep 2026): 35% of its 299 small code+test commits ("fixes") touch
+an async definition and 33% touch module-level code, so a graph with sync definitions only and no module nodes
+contains every edited location for just 42% of them.
+
+## What is here (v0.4, 6 Oct 2026)
 
 | Component | File | Status |
 |---|---|---|
@@ -25,6 +48,8 @@ License: Apache-2.0.
 | Gemma 4 re-ranking baseline: candidates from the released vs the cgl graph, prompts → OpenRouter (standard library only, key read from a local file) → paired evaluation | `scripts/10_build_llm_prompts.py`, `scripts/11_run_llm.py`, `scripts/12_eval_llm.py` | done |
 | Pre-registered held-out confirmation: SWE-bench Lite (294) + pymatgen (450); retrieval, Gemma prompts, one-command Mac runner | `scripts/13_heldout_benchmark.py`, `scripts/run_heldout_mac.sh` | done |
 | Paper figures; sensitivity analysis without module-level gold | `scripts/14_figures.py`, `scripts/15_sensitivity_module_gold.py` | done |
+| **Fix profile** of any repository (`cgl-profile`): share of fixes touching async definitions and module-level code, with bootstrap CIs; profiles of the 16 repositories in the paper | `src/cgl/profile.py`, `src/cgl/mining.py`, `scripts/16_profile_repos.py` | v0.4, tested |
+| Experiment 5, pre-registered: Gemma 4 as a graph-navigating localization agent (search / neighbours / read / submit tools), released graph vs cgl on all 1,379 tasks | `src/cgl/agent.py`, `scripts/17_agent_localize.py`, `scripts/18_eval_agent.py`, `scripts/run_agent_mac.sh` | running |
 
 ## Reproduce
 
@@ -70,8 +95,13 @@ python scripts/08_fetch_pr_texts.py --mined results/heldout/pymatgen --out resul
 bash scripts/run_heldout_mac.sh     # clones the other repositories, builds 744 tasks, runs Gemma (1,488 requests, about $0.41)
 python scripts/12_eval_llm.py --heldout --prompts results/heldout/llm/prompts.jsonl \
        --responses results/heldout/llm/responses.jsonl --out results/heldout/llm/summary.json
-python scripts/14_figures.py                         # Figures 1-2 and results/figures/figure_data.json
+python scripts/16_profile_repos.py --repos ../repos  # fix profiles of the 16 repositories (Figure 1)
+python scripts/14_figures.py                         # Figures 1-3 and results/figures/figure_data.json
 python scripts/15_sensitivity_module_gold.py --repos ../repos
+
+# Experiment 5, Gemma 4 as a graph-navigating agent (pre-registration: docs/preregistration_agent.md)
+bash scripts/run_agent_mac.sh pilot   # 20 public tasks; prints loop mechanics only, no accuracy
+bash scripts/run_agent_mac.sh full    # all splits, both graphs; about $19 on OpenRouter; resumable
 ```
 
 Full experiment log: `docs/experiments_log.md`.

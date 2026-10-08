@@ -1,0 +1,42 @@
+{
+ "repository": "fastapi",
+ "package": "fastapi",
+ "since": "2019-01-01",
+ "until": "2026-09-30",
+ "head": "78c4324f0c56bc5282a459978779a9e532d19709 2026-09-30",
+ "elapsed_s": 14.9,
+ "n_fixes": 244,
+ "n_edit_locations": 898,
+ "edit_locations": {
+  "sync functions/methods": 685,
+  "async functions/methods": 106,
+  "classes (class body)": 46,
+  "module-level code (incl. new top-level definitions)": 61
+ },
+ "share_of_edit_locations": {
+  "async": 0.118,
+  "module-level": 0.0679
+ },
+ "share_of_fixes": {
+  "touching async code": [
+   0.2951,
+   0.2377,
+   0.3566
+  ],
+  "touching module-level code": [
+   0.2295,
+   0.1762,
+   0.2828
+  ],
+  "fully representable by a released-style graph": [
+   0.5574,
+   0.4959,
+   0.6189
+  ],
+  "not representable at all by a released-style graph": [
+   0.1475,
+   0.1066,
+   0.1967
+  ]
+ }
+}

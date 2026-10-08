@@ -1,0 +1,42 @@
+{
+ "repository": "pytest",
+ "package": "_pytest",
+ "since": "2019-01-01",
+ "until": "2026-09-30",
+ "head": "f5240bef4d8b31232d570fb80ea4f7c50b087d1b 2026-10-04",
+ "elapsed_s": 36.5,
+ "n_fixes": 779,
+ "n_edit_locations": 2489,
+ "edit_locations": {
+  "sync functions/methods": 2021,
+  "async functions/methods": 0,
+  "classes (class body)": 205,
+  "module-level code (incl. new top-level definitions)": 263
+ },
+ "share_of_edit_locations": {
+  "async": 0.0,
+  "module-level": 0.1057
+ },
+ "share_of_fixes": {
+  "touching async code": [
+   0.0,
+   0.0,
+   0.0
+  ],
+  "touching module-level code": [
+   0.3004,
+   0.2683,
+   0.3338
+  ],
+  "fully representable by a released-style graph": [
+   0.6996,
+   0.6662,
+   0.7317
+  ],
+  "not representable at all by a released-style graph": [
+   0.0218,
+   0.0116,
+   0.0334
+  ]
+ }
+}
