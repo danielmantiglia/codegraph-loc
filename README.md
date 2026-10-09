@@ -49,7 +49,7 @@ contains every edited location for just 42% of them.
 | Pre-registered held-out confirmation: SWE-bench Lite (294) + pymatgen (450); retrieval, Gemma prompts, one-command Mac runner | `scripts/13_heldout_benchmark.py`, `scripts/run_heldout_mac.sh` | done |
 | Paper figures; sensitivity analysis without module-level gold | `scripts/14_figures.py`, `scripts/15_sensitivity_module_gold.py` | done |
 | **Fix profile** of any repository (`cgl-profile`): share of fixes touching async definitions and module-level code, with bootstrap CIs; profiles of the 16 repositories in the paper | `src/cgl/profile.py`, `src/cgl/mining.py`, `scripts/16_profile_repos.py` | v0.4, tested |
-| Experiment 5, pre-registered: Gemma 4 as a graph-navigating localization agent (search / neighbours / read / submit tools), released graph vs cgl on all 1,379 tasks | `src/cgl/agent.py`, `scripts/17_agent_localize.py`, `scripts/18_eval_agent.py`, `scripts/run_agent_mac.sh` | running |
+| Experiment 5, pre-registered: Gemma 4 as a graph-navigating localization agent (search / neighbours / read / submit tools), released graph vs cgl on 1,359 tasks (2,718 episodes; results in `results/agent/`) | `src/cgl/agent.py`, `scripts/17_agent_localize.py`, `scripts/18_eval_agent.py`, `scripts/run_agent_mac.sh` | done |
 
 ## Reproduce
 
@@ -96,7 +96,7 @@ bash scripts/run_heldout_mac.sh     # clones the other repositories, builds 744 
 python scripts/12_eval_llm.py --heldout --prompts results/heldout/llm/prompts.jsonl \
        --responses results/heldout/llm/responses.jsonl --out results/heldout/llm/summary.json
 python scripts/16_profile_repos.py --repos ../repos  # fix profiles of the 16 repositories (Figure 1)
-python scripts/14_figures.py                         # Figures 1-3 and results/figures/figure_data.json
+python scripts/14_figures.py                         # Figures 1-4 and results/figures/figure_data.json
 python scripts/15_sensitivity_module_gold.py --repos ../repos
 
 # Experiment 5, Gemma 4 as a graph-navigating agent (pre-registration: docs/preregistration_agent.md)

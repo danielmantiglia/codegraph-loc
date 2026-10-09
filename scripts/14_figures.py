@@ -8,6 +8,10 @@ Figure 2 (fig_selection) — (a) Gemma's Hit@5 gain against the gain in candidat
 Figure 3 (fig_forest)    — forest plot: our graph minus the released graph (or its emulated schema), per split,
                            for BM25 Recall@10, BM25+PPR fusion with `calls`-only propagation Recall@10 (the
                            pre-registered H1 contrast) and Gemma 4 Hit@5; filled marker = 95% CI excludes zero.
+Figure 4 (fig_agent)     — Experiment 5, Gemma 4 as a graph-navigating agent: (a) Hit@5, our graph minus the
+                           released graph, per split; (b) the same difference on tasks with an edited location
+                           missing from the released graph vs tasks with all of them present (pre-registered H7).
+                           From results/agent/gemma-4-31b-it/answers.jsonl, pilot tasks excluded.
 Plotted numbers are written to results/figures/figure_data.json (paired bootstrap 95% CIs, 5,000 resamples, seed 0).
 
 Usage:  python scripts/14_figures.py              # recompute from per-task records, then draw
@@ -90,6 +94,67 @@ def llm_numbers():
                           "gemma_hit5_diff": D["cgl - official [llm_hit@5]"],
                           "cand_hit_diff": D["cgl - official [cand_hit]"],
                           "selection_given_gold": S["llm_hit@5_given_gold_in_candidates"]}
+    return out
+
+
+AGENT = Path("results/agent/gemma-4-31b-it/answers.jsonl")
+PILOT = Path("results/agent/pilot/gemma-4-31b-it/answers.jsonl")
+
+
+def agent_numbers():
+    """Per split: Hit@5 difference (cgl - official) and the same split by whether the released graph
+    (or its schema) contains every edited location. Definitions as in scripts/18_eval_agent.py."""
+    if not AGENT.exists():
+        return {}
+    import importlib.util
+    spec = importlib.util.spec_from_file_location("eval_agent", Path(__file__).with_name("18_eval_agent.py"))
+    ev = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(ev)
+    skip = {(r["split"], r["task_id"]) for r in map(json.loads, open(PILOT))} if PILOT.exists() else set()
+    recs = {}
+    for line in open(AGENT):
+        r = json.loads(line)
+        if r.get("ok") and (r["split"], r["task_id"]) not in skip:
+            recs[r["key"]] = r
+    by = {}
+    for r in recs.values():
+        by.setdefault((r["split"], r["task_id"]), {})[r["condition"]] = r
+    rows = [c for c in by.values() if {"official", "cgl"} <= set(c)]
+    groups = {k: [c for c in rows if c["cgl"]["split"] == k] for k, *_ in SPLITS}
+    groups["heldout"] = groups["swebl"] + groups["pymatgen"]
+    groups["all"] = rows
+    out = {}
+    for k, cs in groups.items():
+        if not cs:
+            continue
+        d = [ev.hit5(c["cgl"]) - ev.hit5(c["official"]) for c in cs]
+        miss = [x for x, c in zip(d, cs) if not ev.complete(c)]
+        pres = [x for x, c in zip(d, cs) if ev.complete(c)]
+        reached = {}
+        for stratum, keep in (("missing", False), ("present", True)):
+            sub = [c for c in cs if ev.complete(c) == keep]
+            if sub:
+                reached[stratum] = {cond: round(float(np.mean([bool(c[cond]["gold_seen"]) for c in sub])), 4)
+                                    for cond in ("official", "cgl")}
+        out[k] = {"n": len(cs), "hit5_diff": boot_ci(d),
+                  "n_missing": len(miss), "gain_missing": boot_ci(miss) if miss else None,
+                  "n_present": len(pres), "gain_present": boot_ci(pres) if pres else None,
+                  "reached_by_stratum": reached}
+    # per repository: agent gain vs the cgl-profile share of fixes a released-style graph cannot fully represent
+    prof_file = Path("results/profiles/summary.json")
+    if prof_file.exists():
+        from scipy.stats import spearmanr
+        prof = json.load(open(prof_file))
+        per = {}
+        for c in rows:
+            per.setdefault(c["cgl"]["repo"], []).append(ev.hit5(c["cgl"]) - ev.hit5(c["official"]))
+        reps = sorted(r for r in per if r in prof)
+        gap = [1 - prof[r]["share_of_fixes"]["fully representable by a released-style graph"][0] for r in reps]
+        gain = [float(np.mean(per[r])) for r in reps]
+        rho, pval = spearmanr(gap, gain)
+        out["by_repo"] = {"repos": {r: {"n": len(per[r]), "gain": round(g, 4), "profile_gap": round(x, 4)}
+                                    for r, g, x in zip(reps, gain, gap)},
+                          "spearman_rho": round(float(rho), 3), "spearman_p": round(float(pval), 3)}
     return out
 
 
@@ -341,6 +406,74 @@ def fig_profiles(prof):
              color=MUTED)
     save(fig, "figure1_fix_profiles")
 
+# ----------------------------------------------------------------------------- figure 4
+def fig_agent(ag):
+    """Experiment 5: (a) agent Hit@5 difference per split; (b) by whether the released graph has the code."""
+    rows_a = [k for k in ("comp", "public", "swebl", "pymatgen", "heldout") if k in ag]
+    rows_b = [k for k in ("comp", "public", "swebl", "pymatgen", "all") if k in ag]
+    name = dict(LABEL, heldout="Held-out pooled", all="All tasks")
+    group = dict(GROUP, heldout="held", all="all")
+    fig, (a, b) = plt.subplots(1, 2, figsize=(7.2, 3.0), gridspec_kw={"width_ratios": [1, 1.25], "wspace": 0.6})
+
+    def stylize(ax, order, xlim, ticks):
+        ax.set_xlim(*xlim)
+        for xv in ticks:
+            if xv:
+                ax.axvline(xv, color=GRID, lw=0.6, zorder=0)
+        ax.axvline(0, color=ZERO, lw=0.8, zorder=1)
+        ax.set_xticks(ticks)
+        ax.set_xticklabels([f"{v:+d}".replace("-", "\u2212").replace("+0", "0") for v in ticks])
+        ax.set_yticks(range(len(order)))
+        ax.set_yticklabels([name[k] for k in order], fontsize=8)
+        for t, k in zip(ax.get_yticklabels(), order):
+            t.set_color(ACCENT if group[k] == "held" else INK)
+            if k in ("heldout", "all"):
+                t.set_fontweight("bold")
+        ax.set_ylim(len(order) - 0.22, -0.75)
+        for sp in ("top", "right", "left"):
+            ax.spines[sp].set_visible(False)
+        ax.tick_params(axis="y", left=False)
+
+    def mark(ax, v, yy, col, filled, marker="o", where="above", text_col=None):
+        m, lo, hi = pts(v)
+        ax.plot([lo, hi], [yy, yy], color=col, lw=1.2, solid_capstyle="butt", zorder=2)
+        ax.plot(m, yy, marker, ms=5.6 if marker == "o" else 5.0, mfc=col if filled else "white", mec=col, mew=1.3,
+                zorder=3)
+        dy, va = (-0.2, "bottom") if where == "above" else (0.2, "top")
+        ax.text(m, yy + dy, f"{m:+.1f}".replace("-", "\u2212"), fontsize=6.8, color=text_col or col, ha="center",
+                va=va, zorder=4, path_effects=[patheffects.withStroke(linewidth=2.4, foreground="white")])
+
+    # (a)
+    for i, k in enumerate(rows_a):
+        col = ACCENT if group[k] == "held" else INK
+        v = ag[k]["hit5_diff"]
+        mark(a, v, i, col, filled=(v[1] > 0 or v[2] < 0))
+    stylize(a, rows_a, (-9, 13), [-5, 0, 5, 10])
+    a.set_xlabel("Hit@5, our graph minus the released graph (points)", fontsize=7.6)
+    a.set_title("a   The agent with each graph", fontsize=8.6, color=INK, loc="left", fontweight="bold", pad=8)
+
+    # (b)
+    for i, k in enumerate(rows_b):
+        col = ACCENT if group[k] == "held" else INK
+        for key, dy, c, mk, where, tcol in (("gain_missing", -0.17, col, "o", "above", None),
+                                            ("gain_present", 0.17, RELEASED, "D", "below", MUTED)):
+            v = ag[k][key]
+            if v:
+                mark(b, v, i + dy, c, filled=(v[1] > 0 or v[2] < 0), marker=mk, where=where, text_col=tcol)
+    stylize(b, rows_b, (-20, 34), [-10, 0, 10, 20, 30])
+    b.set_xlabel("Hit@5, our graph minus the released graph (points)", fontsize=7.6)
+    b.set_title("b   The gain comes from code the released graph lacks", fontsize=8.6, color=INK, loc="left",
+                fontweight="bold", pad=8)
+    handles = [Line2D([], [], marker="o", ls="", ms=5.6, mfc="white", mec=INK, mew=1.3,
+                      label="tasks with an edited location missing from the released graph"),
+               Line2D([], [], marker="D", ls="", ms=5.0, mfc="white", mec=RELEASED, mew=1.3,
+                      label="tasks with every edited location present")]
+    b.legend(handles=handles, loc="upper left", bbox_to_anchor=(-0.02, -0.19), ncol=1, fontsize=7, frameon=False,
+             labelcolor=INK2, handletextpad=0.3, borderaxespad=0, borderpad=0)
+    a.text(0, -0.215, "Both panels: filled marker = 95% CI excludes 0", transform=a.transAxes, fontsize=7,
+           color=MUTED, va="top")
+    save(fig, "figure4_agent")
+
 
 def main():
     ap = argparse.ArgumentParser()
@@ -358,11 +491,14 @@ def main():
         llm = llm_numbers() or data["gemma"]
     else:
         ret, llm = retrieval_contrasts(), llm_numbers()
-    data_file.write_text(json.dumps({"retrieval_recall@10": ret, "gemma": llm}, indent=1))
+    ag = agent_numbers() or (json.load(open(data_file)).get("agent", {}) if data_file.exists() else {})
+    data_file.write_text(json.dumps({"retrieval_recall@10": ret, "gemma": llm, "agent": ag}, indent=1))
     setup()
     fig_forest(ret, llm)
     if llm:
         fig_selection(llm)
+    if ag:
+        fig_agent(ag)
     prof_file = Path("results/profiles/summary.json")
     if prof_file.exists():
         fig_profiles(json.load(open(prof_file)))

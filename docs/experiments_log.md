@@ -357,3 +357,41 @@ The two splits behave differently:
    | Held-out | +1.9 | +2.1 |
    | Competition | +3.9 | +1.6 |
 4. **Module nodes are a trade-off.** They make module-level fixes (7–9% of gold) reachable, but add candidates that compete with functions. Whether to include them should depend on how often a repository's fixes touch module-level code.
+
+## Experiment 5 — Gemma 4 as a graph-navigating agent (pre-registered; 2,718 episodes, 8–9 Oct)
+
+**Design** (`docs/preregistration_agent.md`; `src/cgl/agent.py`, `scripts/17_agent_localize.py`, `scripts/18_eval_agent.py`, `scripts/run_agent_mac.sh`). Gemma 4 31B-it receives the issue and four tools over one graph: `search_code` (BM25 over non-test definitions, top 10), `get_neighbors` (callers and callees along `calls` edges, 10 each), `read_code` (first 60 lines) and `submit_answer` (5 ranked ids). Budget 20 tool calls, 30 turns (protocol v2). Every task runs twice: with the released graph (competition tasks) or its emulated schema (public and held-out tasks), and with our full graph (`calls` edges). OpenRouter, CoreWeave fp4 pinned, temperature 0, seed 0, reasoning off. A correct full id outside the agent's graph is kept (conservative for our graph).
+
+**Pilots** (20 public tasks, mechanics only, no accuracy inspected): v1 (budget 12, "up to 5" ids) → 40% of episodes exhausted the budget and answers had 1.9 ids on average; v2 (budget 20, "5 ranked ids") → frozen. Pilot tasks are excluded from all analyses.
+
+**Run.** 1,359 tasks × 2 graphs; all episodes ended with an answer; 4 episodes failed on the OpenRouter key limit and were re-run after a resume-guard fix (deviation logged). Cost $18.38 ($0.0068 per episode). Scoring identical on macOS (Python 3.14) and Linux (Python 3.11).
+
+### Pre-registered hypotheses (Hit@5, cgl − official, points)
+
+| # | Population | Estimate (95% CI) | Outcome |
+|---|---|---|---|
+| H5 | public history, n = 487 | **+6.4 (3.1, 9.9)** | confirmed |
+| H6 | held-out pooled, n = 744 | +1.6 (−0.4, 3.6) | not confirmed |
+| H7 | all splits: gain with an edited location missing from `official` (n = 449) +11.8 (8.0, 15.6) vs all present (n = 910) −1.0 (−2.9, 0.8) | **+12.8 (8.6, 17.0)** | confirmed |
+| H8 | held-out, every edited location in `official`, n = 617 | +0.3 (−1.8, 2.4), inside ±5 | confirmed |
+
+### Secondary and exploratory (`14_figures.py` → `results/figures/figure_data.json`, key `agent`)
+
+| Split | Hit@5 diff | Missing stratum (n) | Present stratum (n) |
+|---|---|---|---|
+| Competition (real released graph) | +0.8 (−7.0, 8.6) | +16.7 (2.1, 31.2) (48) | −8.8 (−16.2, −1.2) (80) |
+| Public history | +6.4 (3.1, 9.9) | +12.8 (7.7, 17.9) (274) | −1.9 (−5.6, 1.4) (213) |
+| SWE-bench Lite | +2.7 (−0.7, 6.1) | +7.7 (0.0, 19.2) (26) | +2.2 (−1.1, 6.0) (268) |
+| pymatgen | +0.9 (−1.6, 3.3) | +7.9 (2.0, 13.9) (101) | −1.1 (−3.7, 1.4) (349) |
+| Held-out pooled | +1.6 (−0.4, 3.6) | +7.9 (3.1, 13.4) (127) | +0.3 (−1.8, 2.4) (617) |
+
+- *Reached* (a tool output showed an edited location), public: 80.9% → 91.6%; Hit@5 given reached in both (n = 388, descriptive): +0.5 (−2.3, 3.4).
+- Competition tasks fully covered by the real released graph: reached 88.8% (released) vs 80.0% (ours). The emulated schema shows no such loss on the public split (−1.9, −5.6 to 1.4); unexplained, and one of eight split × stratum cells.
+- Per repository: gain vs the `cgl-profile` share of fixes not fully representable by a released-style graph, Spearman ρ = 0.485 (p = 0.057), 16 repositories (5 with fewer than 10 tasks).
+- Mechanics: 14.2 tool calls per episode (40% used all 20); 2.55 ids per answer (equal across graphs); `get_neighbors` 2% of 38,555 calls.
+
+### What Experiment 5 establishes
+
+1. **The graph is the ceiling for an agent too.** With our graph the agent reaches the edited code more often; once both reach it, they select equally well.
+2. **The gain sits where the released graph lacks the edited code (H7), and only there (H8).** Overall gains therefore depend on how often a repository's fixes touch omitted code: large on the async-heavy development repositories (H5), small and not significant held out (H6).
+3. **An agent barely uses edges.** Node coverage matters more than edge structure for this kind of agent.
