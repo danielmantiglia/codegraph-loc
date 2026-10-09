@@ -1,0 +1,48 @@
+{
+ "episodes_ok": 2718,
+ "episodes_failed": 4,
+ "failure_messages": {
+  "RuntimeError: HTTP 403: {\"error\":{\"message\":\"Key limit exceeded (total limit). M": 4
+ },
+ "finish": {
+  "submit": 2717,
+  "text_fallback": 1
+ },
+ "mean_tool_calls": 14.19,
+ "share_using_whole_budget": 0.4,
+ "mean_turns": 15.52,
+ "mean_nudges": 0.11,
+ "share_empty_answer": 0.002,
+ "mean_answer_len": 2.55,
+ "answer_len_counts": {
+  "0": 6,
+  "1": 1042,
+  "2": 581,
+  "3": 293,
+  "4": 124,
+  "5": 672
+ },
+ "protocols": {
+  "v2": 2718
+ },
+ "tool_calls_total": {
+  "search_code": 15328,
+  "read_code": 22429,
+  "get_neighbors": 798
+ },
+ "mean_prompt_tokens": 65979,
+ "mean_completion_tokens": 484,
+ "max_prompt_tokens": 594988,
+ "cost_usd_total": 18.3803,
+ "cost_usd_per_episode": 0.00676,
+ "providers": {
+  "CoreWeave": 2718
+ },
+ "mean_seconds": 24.1,
+ "tool_results": {
+  "tool results": 42315,
+  "no such node": 720,
+  "budget exhausted": 1043,
+  "search: no match": 493
+ }
+}

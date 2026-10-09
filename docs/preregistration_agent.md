@@ -79,3 +79,27 @@ Any other analysis is labelled exploratory.
   Everything else is unchanged. This is protocol **v2** (`cgl.agent.PROTOCOL`), recorded in every episode; the scripts refuse to mix protocols in one output folder. Pilot 2 repeats the same 20 tasks with v2 (`results/agent/pilot_v2/`); those tasks stay excluded from every analysis.
 - **2026-10-08, pilot 2 (protocol v2, same 20 tasks), mechanics only.** 40 episodes, 0 failures, all ended with `submit_answer`, $0.28 in total ($0.0070 per episode), CoreWeave for every request. Mean answer length 2.98 ids (5 ids in 10 of 40 episodes; 1 id in 7). 47.5% of episodes used all 20 tool calls, about the same share as with 12 calls, so the model tends to spend whatever budget it has; raising it further would mainly add cost. **No further change: protocol v2 is frozen.** The full run skips the 20 pilot tasks (`--exclude-tasks-from`) and is capped at $25 (§4).
 - Observation kept for the paper, not acted on: the agent rarely follows edges (12 `get_neighbors` calls against 217 `read_code` and 147 `search_code`), so this experiment mainly tests which nodes the graph contains. Pilot 2 is similar (19 `get_neighbors` calls against 366 `read_code` and 215 `search_code`).
+
+- **Registration commit.** The header gives 19:50 UTC, written just before committing; the commit that registered this document is `99d5c17` in the public repository, 2026-10-08 19:48:27 UTC.
+- **2026-10-09, bug fix in the resume guard of `17_agent_localize.py`, during the full run (no effect on episodes, prompts or scoring).** After 1,390 of 2,718 episodes the run stopped because the OpenRouter key's own spending limit ($10) was reached (HTTP 403 on 4 episodes; the account still had credit). On restart, the guard that refuses to mix protocols read the 4 failure records, which carried no `protocol` field, as protocol v1 and refused to resume. Fix: failure records now carry the protocol, and only successful episodes are checked. Nothing else changed; `17_agent_localize.py` fingerprint is now 0965244cbf9632d5 (was fa84e01b2e10b1e8). The key limit was raised by Daniel and the run resumed in the same folder.
+
+## 9. Outcome (added 9 Oct 2026, after the full run)
+
+Full run: 2,718 episodes (1,359 tasks × 2 graphs, the 20 pilot tasks excluded), all ended with an answer (2,717 by `submit_answer`, 1 by the text fallback); 4 episodes failed on the key limit and were re-run (§8). Provider: CoreWeave for every request. Cost $18.38 ($0.0068 per episode); with the pilots, Experiment 5 cost $18.77. Scoring (`18_eval_agent.py`) gives identical summaries on macOS (Python 3.14) and Linux (Python 3.11).
+
+| # | Estimate, Hit@5 cgl − official (95% CI) | Outcome |
+|---|---|---|
+| H5 | public history, n = 487: **+0.064 (0.031, 0.099)** | confirmed |
+| H6 | held-out pooled, n = 744: +0.016 (−0.004, 0.036) | not confirmed |
+| H7 | gain with an edited location missing from `official` (n = 449): +0.118 (0.080, 0.156); with all present (n = 910): −0.010 (−0.029, 0.008); difference **+0.128 (0.086, 0.170)** | confirmed |
+| H8 | held-out tasks with every edited location in `official`, n = 617: +0.003 (−0.018, 0.024), inside ±0.05 | confirmed |
+
+**Secondary (§6), as registered.**
+- Per split, Hit@5 cgl − official: competition (real released graph, n = 128) +0.008 (−0.070, 0.086); SWE-bench Lite (n = 294) +0.027 (−0.007, 0.061); pymatgen (n = 450) +0.009 (−0.016, 0.033).
+- *Reached* (a tool output showed an edited location), public split: 0.809 → 0.916, +0.107 (0.076, 0.138). Hit@5 given reached in both conditions: +0.005 (−0.023, 0.034). As in Experiments 3–4, the gain is in what the agent can find, not in how it chooses.
+- With the `official` graph, 6.6% of public tasks were hit by naming an id absent from that graph (kept by the conservative answer rule, §2).
+- Per repository, the agent's gain against the `cgl-profile` share of fixes a released-style graph does not fully represent: Spearman ρ = 0.48 (p = 0.057) over the 16 repositories, several of which have fewer than 10 tasks.
+- Mechanics: 14.2 tool calls per episode (40% used all 20); 2.55 ids per answer (5 ids in 25% of episodes, 1 id in 38%); `get_neighbors` was 2% of tool calls.
+- The second model (Gemma 4 26B A4B) was not run at the time of writing.
+
+Any other analysis of these data is exploratory.

@@ -145,7 +145,8 @@ def work(task: dict, conds: list, cfg: dict) -> list:
 
 def task_key(task, cond, cfg):
     return {"key": f"{task['split']}|{task['task_id']}|{cond}", "split": task["split"],
-            "task_id": task["task_id"], "repo": task["repo"], "condition": cond, "model": cfg["model"]}
+            "task_id": task["task_id"], "repo": task["repo"], "condition": cond, "model": cfg["model"],
+            "protocol": PROTOCOL}
 
 
 def read_key(path: Path) -> str:
@@ -196,8 +197,8 @@ def main():
             except json.JSONDecodeError:
                 continue
             spent_before += r.get("cost_usd") or 0.0
-            protocols.add(r.get("protocol", "v1"))
-            if r.get("ok"):
+            if r.get("ok"):  # failure records carry no episode, so they say nothing about the protocol
+                protocols.add(r.get("protocol", "v1"))
                 done.add(r["key"])
     if protocols - {PROTOCOL}:
         sys.exit(f"{answers} holds episodes of protocol {sorted(protocols)}, this code is {PROTOCOL}: "
