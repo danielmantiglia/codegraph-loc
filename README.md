@@ -29,7 +29,7 @@ Example (`cgl-profile` on httpx, commits 2019 to Sep 2026): 35% of its 299 small
 an async definition and 33% touch module-level code, so a graph with sync definitions only and no module nodes
 contains every edited location for just 42% of them.
 
-## What is here (v0.4, 6 Oct 2026)
+## What is here
 
 | Component | File | Status |
 |---|---|---|
@@ -56,7 +56,7 @@ contains every edited location for just 42% of them.
 ```bash
 mkdir -p ../repos && for r in fastapi/fastapi Textualize/rich psf/requests encode/httpx; do
   git clone https://github.com/$r ../repos/$(basename $r); done
-pip install -e ".[dev,baselines]"
+pip install -e ".[dev,baselines,figures]"
 pytest
 
 # public-history analyses (no competition data needed)
@@ -97,12 +97,26 @@ python scripts/12_eval_llm.py --heldout --prompts results/heldout/llm/prompts.js
        --responses results/heldout/llm/responses.jsonl --out results/heldout/llm/summary.json
 python scripts/16_profile_repos.py --repos ../repos  # fix profiles of the 16 repositories (Figure 1)
 python scripts/14_figures.py                         # Figures 1-4 and results/figures/figure_data.json
+# (figures use IBM Plex Sans, shipped in fonts/ under the SIL Open Font License)
 python scripts/15_sensitivity_module_gold.py --repos ../repos
 
 # Experiment 5, Gemma 4 as a graph-navigating agent (pre-registration: docs/preregistration_agent.md)
 bash scripts/run_agent_mac.sh pilot   # 20 public tasks; prints loop mechanics only, no accuracy
 bash scripts/run_agent_mac.sh full    # all splits, both graphs; about $19 on OpenRouter; resumable
 ```
+
+## Environment
+
+- **Hardware.** An Apple Silicon Mac (arm64) and a Linux x86-64 cloud workspace; no GPU. Graphs, retrievers and
+  statistics run on a CPU, and Gemma 4 is called through an API.
+- **Software.** Python 3.14 on macOS and 3.11 on Linux (any Python >= 3.10 should work); `networkx`, `numpy`,
+  `scipy`, `rank-bm25`, `matplotlib`; `pytest` (23 tests). Scoring Experiment 5 gives identical summaries on both systems.
+- **Language model.** `google/gemma-4-31b-it` through OpenRouter, temperature 0, seed 0, reasoning off, with the provider
+  recorded for every request: bf16 providers for the re-ranking experiments (3 and 4), one pinned fp4 provider
+  (CoreWeave) for the agent (Experiment 5). The API key is read from a local file and never stored in the repository.
+- **Memory.** Graphs of the largest repositories (django, sympy, pymatgen) need 1.5-2.2 GB of RAM per worker.
+- **Time and cost.** A 7,000-node graph builds in about 3 s; `cgl-profile` takes 2 s to 2.5 min per repository.
+  API cost: about $0.30 (Experiment 3), $0.41 (Experiment 4) and $18.77 (Experiment 5 with its pilots), about $19.5 in all.
 
 Full experiment log: `docs/experiments_log.md`.
 
@@ -111,7 +125,9 @@ per-task rankings of the public split, Gemma's answers on the held-out split, ev
 Not published: anything derived from the competition data beyond aggregate statistics, and the texts of issues and
 pull requests (the scripts fetch them again from GitHub and Hugging Face).
 
-## Results so far (preliminary)
+## Results
+
+The paper reports the final numbers; this section summarises them by experiment.
 
 **Public history.** On 653 code+test commits (2019 → Sep 2026) from the four repositories, a graph
 without async definitions and without module nodes can represent **all** gold edit locations for only
@@ -148,7 +164,7 @@ the ranking (Hit@5 0.536, 0.596 without test code).
 **Gemma 4 re-ranking** (635 tasks; Gemma 4 31B-it chooses 5 of ~31 graph candidates; 1,270 requests, about $0.30): on the
 public-history split, candidates from the full cgl graph instead of the released schema raise Gemma's Hit@1 by 7.5 points
 and Hit@5 by 6.3 (0.763 vs 0.700; paired 95% CIs above zero). When the gold location is among the candidates, Gemma puts
-it in its top 5 about 93% of the time with either graph, so the gain is entirely candidate coverage. Gemma beats BM25 by
+it in its top 5 about 92% of the time with either graph, so the gain is entirely candidate coverage. Gemma beats BM25 by
 14–19 points of Hit@5 on the same candidates. On the 128 competition tasks the effect has the same sign but is not significant.
 
 **Pre-registered held-out test** (744 tasks: SWE-bench Lite and pymatgen; hypotheses registered before any held-out task was built).
@@ -156,3 +172,8 @@ it in its top 5 about 93% of the time with either graph, so the gain is entirely
 - **Confirmed.** `calls`-only propagation ranks better than untyped structural edges (MRR +1.7). Gemma gains +2.1 Hit@5 with cgl candidates. Its selection accuracy given coverage is unchanged (95%).
 - **Not confirmed.** The retrieval coverage gain (Recall@10 +0.7, CI −0.3 to 1.7). None of the held-out fixes touches async code, the released schema's main gap.
 - **Exploratory: without module-level gold.** The held-out gain disappears, while the public-history gain survives through async definitions.
+
+**Experiment 5, pre-registered: Gemma 4 as a graph-navigating agent** (1,359 tasks, 2,718 episodes; `results/agent/`).
+With our graph the agent's Hit@5 rises by 6.4 points on public history (CI 3.1-9.9) and by 11.8 points on tasks whose
+edited code the released graph lacks (8.0-15.6), against -1.0 (-2.9 to 0.8) where the released graph has all of it.
+Held out, the overall gain is +1.6 (-0.4 to 3.6; not confirmed). Full outcome: `docs/preregistration_agent.md`, section 9.

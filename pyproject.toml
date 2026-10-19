@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "codegraph-loc"
-version = "0.4.0"
+version = "0.7.0"
 description = "Open code-graph generator, function-level bug-localization benchmark and fix-profile tool for local coding agents"
 readme = "README.md"
 license = {text = "Apache-2.0"}
@@ -17,6 +17,7 @@ cgl-profile = "cgl.profile:main"
 [project.optional-dependencies]
 baselines = ["rank-bm25>=0.2.2", "scipy>=1.11"]
 dev = ["pytest>=8"]
+figures = ["matplotlib>=3.8", "scipy>=1.11"]
 
 [tool.setuptools.packages.find]
 where = ["src"]
